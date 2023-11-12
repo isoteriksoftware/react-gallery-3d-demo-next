@@ -22,7 +22,11 @@ const CameraUpdate: React.FC<{
   return null;
 };
 
-const DemoScene: React.FC<PropsWithChildren> = ({ children }) => {
+const DemoScene: React.FC<
+  PropsWithChildren<{
+    sceneElements?: React.ReactNode;
+  }>
+> = ({ children, sceneElements }) => {
   const {
     groundControls,
     fogControls,
@@ -50,6 +54,7 @@ const DemoScene: React.FC<PropsWithChildren> = ({ children }) => {
         minPolarAngle: Math.PI / 2 - 0.5,
         maxPolarAngle: Math.PI / 2 - 0.01,
       }}
+      disableEnvironment={!environmentControls.enableEnvironment}
       environment={{
         preset: environmentControls.preset as EnvironmentPresets,
       }}
@@ -83,6 +88,7 @@ const DemoScene: React.FC<PropsWithChildren> = ({ children }) => {
         {children}
       </Gallery>
 
+      {sceneElements}
       <Stats />
       <CameraUpdate cameraControls={cameraControls} />
     </GalleryScene>

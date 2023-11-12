@@ -64,6 +64,7 @@ const Navigation = () => {
               <NavLink href="/basic" text="Basic Gallery" />
               <NavLink href="/image" text="Image Gallery" />
               <NavLink href="/video" text="Video Gallery" />
+              <NavLink href="/custom" text="Custom Gallery" />
             </div>
           </div>
         </div>
