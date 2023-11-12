@@ -112,7 +112,10 @@ const CustomGallery = () => {
 
   const autoPlayOnInit = ({ itemMaterial }: GalleryItemInitData) => {
     if (itemMaterial instanceof VideoItemMaterial) {
-      itemMaterial.getVideo()?.play();
+      const video = itemMaterial.getVideo()!;
+      video.muted = true;
+      video.loop = true;
+      video.play();
     }
   };
 
