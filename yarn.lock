@@ -2558,10 +2558,10 @@ react-dropzone@^12.0.0:
     file-selector "^0.5.0"
     prop-types "^15.8.1"
 
-react-gallery-3d@^1.4.1:
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/react-gallery-3d/-/react-gallery-3d-1.4.1.tgz#ade77f15d8e3ccd07b6aa63618918addefa3e9d8"
-  integrity sha512-vKdC1B6XXL7Gd4hNGlhcOOHCxm7rjRz9kaMJEd00Ock0yL1Z+mIZr1Sj+vR40/WtcMzRRaCYONeeSuqzLEuhXw==
+react-gallery-3d@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/react-gallery-3d/-/react-gallery-3d-1.5.1.tgz#8d4aa8ad28788c06a2ebc4fdcedf5946ee5fa2b6"
+  integrity sha512-HVoiqjyaztCnqm+arMg5HuTaaVHInkCA7/Sj5Zmu2yH2BSL1CtAlwlmkrH2aYnjJ6tdVZEj2IBbLMNPRtZZhuw==
   dependencies:
     three-csg-ts "^3.1.13"
 

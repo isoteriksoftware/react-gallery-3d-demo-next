@@ -10,6 +10,7 @@ import {
 import DemoScene from "@/components/gallery/DemoScene";
 import { Material, MeshPhysicalMaterial, MeshStandardMaterial } from "three";
 import SceneLights from "@/components/gallery/DemoScene/SceneLights";
+import { useMemo } from "react";
 
 class ShinySolidMaterial implements GalleryItemMaterial {
   private readonly color: string;
@@ -82,6 +83,14 @@ class ShinyVideoMaterial extends VideoItemMaterial {
 }
 
 const CustomGallery = () => {
+  const customItemMaterials = useMemo(() => {
+    return [
+      new GlassySolidMaterial("./images/img4.jpg"),
+      new ShinySolidMaterial("green"),
+      new ShinyVideoMaterial("./videos/vid6.mp4"),
+    ];
+  }, []);
+
   const makeWireframe = (material: MeshStandardMaterial) => {
     material.wireframe = true;
     material.needsUpdate = true;
@@ -121,14 +130,13 @@ const CustomGallery = () => {
           makeTransparent(material as MeshStandardMaterial)
         }
       />
-      <GalleryItem itemMaterial={new ShinySolidMaterial("green")}></GalleryItem>
-      <GalleryItem
-        itemMaterial={new GlassySolidMaterial("./images/img4.jpg")}
-      ></GalleryItem>
-      <GalleryItem
-        itemMaterial={new ShinyVideoMaterial("./videos/vid6.mp4")}
-        onInit={autoPlayOnInit}
-      ></GalleryItem>
+      {...customItemMaterials.map((material, index) => (
+        <GalleryItem
+          key={index}
+          itemMaterial={material}
+          onInit={autoPlayOnInit}
+        />
+      ))}
     </DemoScene>
   );
 };
