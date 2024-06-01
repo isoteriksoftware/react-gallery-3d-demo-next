@@ -6,7 +6,7 @@ export const useGallerySceneSettings = () => {
     height: { value: 60, min: 10, max: 1000 },
     radialSegments: { value: 50, min: 8, max: 100 },
     heightSegments: { value: 1, min: 1, max: 100 },
-    innerRadiusPercent: { value: 0.99, min: 0.1, max: 0.99 },
+    innerRadiusPercent: { value: 0.01, min: 0.01, max: 0.99 },
   });
 
   const environmentControls = useControls("Environment", {

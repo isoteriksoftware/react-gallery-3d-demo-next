@@ -5,6 +5,7 @@ import { useThree } from "@react-three/fiber";
 import { PerspectiveCamera } from "three";
 import { useGallerySceneSettings } from "@/common/hooks";
 import { EnvironmentPresets } from "@/components/gallery/types";
+import SceneLights from "@/components/gallery/DemoScene/SceneLights";
 
 const CameraUpdate: React.FC<{
   cameraControls: { fov: number; position: [number, number, number] };
@@ -58,25 +59,25 @@ const DemoScene: React.FC<
       environment={{
         preset: environmentControls.preset as EnvironmentPresets,
       }}
+      ground={{
+        width: groundControls.width,
+        height: groundControls.height,
+        disableReflector: !groundControls.enableReflector,
+        reflectorMaterial: {
+          color: groundControls.groundColor,
+          metalness: groundControls.metalness,
+          roughness: groundControls.roughness,
+          mirror: groundControls.mirror,
+          resolution: groundControls.resolution,
+          depthScale: groundControls.depthScale,
+          minDepthThreshold: groundControls.minDepthThreshold,
+          maxDepthThreshold: groundControls.maxDepthThreshold,
+        },
+      }}
+      disableGround={!groundControls.enableGround}
     >
       {/* @ts-expect-error */}
       <Gallery
-        ground={{
-          width: groundControls.width,
-          height: groundControls.height,
-          disableReflector: !groundControls.enableReflector,
-          reflectorMaterial: {
-            color: groundControls.groundColor,
-            metalness: groundControls.metalness,
-            roughness: groundControls.roughness,
-            mirror: groundControls.mirror,
-            resolution: groundControls.resolution,
-            depthScale: groundControls.depthScale,
-            minDepthThreshold: groundControls.minDepthThreshold,
-            maxDepthThreshold: groundControls.maxDepthThreshold,
-          },
-        }}
-        disableGround={!groundControls.enableGround}
         item={{
           width: galleryItemControls.width,
           height: galleryItemControls.height,
@@ -89,6 +90,7 @@ const DemoScene: React.FC<
       </Gallery>
 
       {sceneElements}
+      <SceneLights />
       <Stats />
       <CameraUpdate cameraControls={cameraControls} />
     </GalleryScene>
