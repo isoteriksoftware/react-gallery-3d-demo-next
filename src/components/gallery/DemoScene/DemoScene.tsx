@@ -72,6 +72,7 @@ const DemoScene: React.FC<{
           minDepthThreshold: groundControls.minDepthThreshold,
           maxDepthThreshold: groundControls.maxDepthThreshold,
         },
+        position: [0, -galleryItemControls.height / 2, 0],
       }}
       disableGround={!groundControls.enableGround}
     >

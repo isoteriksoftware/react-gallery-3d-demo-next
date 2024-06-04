@@ -9,12 +9,13 @@ const Footer = () => {
   return (
     <footer
       style={{
-        background: "#292828",
+        background: "rgba(41, 40, 40, 0.5)",
         width: "100%",
         display: "flex",
         alignItems: "center",
         padding: "10px",
         paddingTop: "16px",
+        backdropFilter: "blur(4px)",
       }}
     >
       <a
