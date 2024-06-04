@@ -1,142 +1,114 @@
 import {
-  VideoItem,
-  GalleryItemMaterial,
   GalleryItem,
-  VideoItemMaterial,
-  GalleryItemInitData,
-  ImageItemMaterial,
+  ImageItemProps,
+  SolidColorItemProps,
+  TransparentItem,
+  useImageMaterial,
+  useVideoMaterial,
+  VideoItemProps,
 } from "react-gallery-3d";
 import DemoScene from "@/components/gallery/DemoScene";
-import { Material, MeshPhysicalMaterial, MeshStandardMaterial } from "three";
+import { MeshPhysicalMaterial } from "three";
 import SceneLights from "@/components/gallery/DemoScene/SceneLights";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import PlaceOnItem from "@/components/utils/PlaceOnItem";
 import Model from "@/components/utils/Model";
-import { Text } from "@react-three/drei";
 
-class ShinySolidMaterial implements GalleryItemMaterial {
-  private readonly color: string;
-  private readonly opacity: number;
+const ShinySolidColorItem = ({
+  color,
+  opacity = 1,
+  ...rest
+}: SolidColorItemProps & {
+  opacity?: number;
+}) => {
+  const material = useMemo(
+    () =>
+      new MeshPhysicalMaterial({
+        reflectivity: 0.8,
+        metalness: 0.7,
+        roughness: 0.1,
+        clearcoat: 0.1,
+        clearcoatRoughness: 0.1,
+        polygonOffsetFactor: 1,
+        polygonOffsetUnits: 1,
+        transparent: true,
+      }),
+    [],
+  );
 
-  constructor(color: string, opacity: number = 1) {
-    this.color = color;
-    this.opacity = opacity;
-  }
+  useEffect(() => {
+    material.color.set(color);
+    material.opacity = opacity;
+  }, [color, material, opacity]);
 
-  public generate() {
-    return new MeshPhysicalMaterial({
-      color: this.color,
-      reflectivity: 1,
-      metalness: 1,
-      roughness: 0.2,
-      clearcoat: 1,
-      clearcoatRoughness: 0.1,
-      polygonOffsetFactor: 1,
-      polygonOffsetUnits: 1,
-      transparent: true,
-      opacity: this.opacity,
-    });
-  }
-}
+  return <GalleryItem material={material} {...rest} />;
+};
 
-class GlassySolidMaterial extends ImageItemMaterial {
-  constructor(src: string) {
-    super(src);
-  }
+const GlassImageItem = ({ src, texture, ...rest }: ImageItemProps) => {
+  const wrappedMaterial = useMemo(
+    () =>
+      new MeshPhysicalMaterial({
+        toneMapped: false,
+        polygonOffset: true,
+        polygonOffsetFactor: 1,
+        polygonOffsetUnits: 1,
+        metalness: 0,
+        roughness: 0,
+        clearcoat: 0.1,
+      }),
+    [],
+  );
 
-  public generate() {
-    this.initTexture();
+  const { material } = useImageMaterial({
+    src,
+    texture,
+    wrappedMaterial,
+  });
 
-    return new MeshPhysicalMaterial({
-      toneMapped: false,
-      map: this.texture,
-      polygonOffset: true,
-      polygonOffsetFactor: 1,
-      polygonOffsetUnits: 1,
-      metalness: 0,
-      roughness: 0,
-      transmission: 0.2,
-      clearcoat: 0.3,
-    });
-  }
-}
+  return <GalleryItem material={material} {...rest} />;
+};
 
-class ShinyVideoMaterial extends VideoItemMaterial {
-  constructor(source: string) {
-    super(source);
-  }
+const ShinyVideoItem = ({ src, ...rest }: VideoItemProps) => {
+  const wrappedMaterial = useMemo(
+    () =>
+      new MeshPhysicalMaterial({
+        toneMapped: true,
+        polygonOffset: true,
+        polygonOffsetFactor: 1,
+        polygonOffsetUnits: 1,
+        reflectivity: 0.1,
+        metalness: 1,
+        roughness: 0.2,
+        clearcoat: 0.2,
+        clearcoatRoughness: 0.1,
+      }),
+    [],
+  );
 
-  generate(): Material | Material[] {
-    this.initVideo();
+  const { material } = useVideoMaterial({
+    src,
+    wrappedMaterial,
+  });
 
-    return new MeshPhysicalMaterial({
-      toneMapped: true,
-      map: this.texture,
-      polygonOffset: true,
-      polygonOffsetFactor: 1,
-      polygonOffsetUnits: 1,
-      reflectivity: 1,
-      metalness: 1,
-      roughness: 0.2,
-      clearcoat: 1,
-      clearcoatRoughness: 0.1,
-    });
-  }
-}
+  return <GalleryItem material={material} {...rest} />;
+};
 
 const CustomGallery = () => {
-  const customItemMaterials = useMemo(() => {
-    return [
-      new ShinySolidMaterial("red"),
-      new GlassySolidMaterial("./images/img2.jpg"),
-      new ShinyVideoMaterial("./videos/vid4.mp4"),
-      new ShinySolidMaterial("green"),
-    ];
-  }, []);
-
-  const makeTransparent = (
-    material: MeshStandardMaterial,
-    opacity: number = 0.7,
-  ) => {
-    material.transparent = true;
-    material.opacity = opacity;
-    material.needsUpdate = true;
-  };
-
-  const autoPlayOnInit = ({ itemMaterial }: GalleryItemInitData) => {
-    if (itemMaterial instanceof VideoItemMaterial) {
-      const video = (itemMaterial as VideoItemMaterial).getVideo()!;
-      video.muted = true;
-      video.loop = true;
-      video.play();
-    }
-  };
-
   return (
     <DemoScene sceneElements={<SceneLights />}>
-      <VideoItem
-        src="./videos/vid1.mp4"
-        onInit={({ material }) =>
-          makeTransparent(material as MeshStandardMaterial)
-        }
-      >
-        <PlaceOnItem rotationY={180}>
-          <Text fontSize={6} color="white" textAlign="center">
-            TRANSPARENT VIDEO
-          </Text>
-        </PlaceOnItem>
-      </VideoItem>
-      <GalleryItem itemMaterial={customItemMaterials[0]}>
+      <TransparentItem>
         <PlaceOnItem offset={40} isOnGround>
           <Model url="./models/belly-dancer.glb" />
         </PlaceOnItem>
-      </GalleryItem>
-      <GalleryItem itemMaterial={customItemMaterials[1]} />
-      <GalleryItem
-        itemMaterial={customItemMaterials[2]}
-        onInit={autoPlayOnInit}
-      />
-      <GalleryItem itemMaterial={customItemMaterials[3]} />
+      </TransparentItem>
+
+      <ShinySolidColorItem color="red"></ShinySolidColorItem>
+
+      <GlassImageItem src={"./images/img2.jpg"} />
+
+      <ShinyVideoItem src={"./videos/vid4.mp4"} />
+
+      <ShinySolidColorItem color="green" opacity={0.5} />
     </DemoScene>
   );
 };
