@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, useEffect, useRef } from "react";
 import { Group, MathUtils } from "three";
-import { usePlacementOnGalleryItem, useGallery } from "react-gallery-3d";
+import { usePlacementOnGalleryItem, useGalleryItem } from "react-gallery-3d";
 
 const PlaceOnItem: React.FC<
   PropsWithChildren<{
@@ -10,7 +10,7 @@ const PlaceOnItem: React.FC<
   }>
 > = ({ children, offset = 0, rotationY = 0, isOnGround }) => {
   const { position, orientation } = usePlacementOnGalleryItem(offset);
-  const { height } = useGallery().item;
+  const { height } = useGalleryItem();
 
   const groupRef = useRef<Group>(null!);
 
