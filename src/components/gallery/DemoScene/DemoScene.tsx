@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useEffect } from "react";
+import React, { PropsWithChildren, ReactElement, useEffect } from "react";
 import { Gallery, GalleryScene } from "react-gallery-3d";
 import { Stats } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
@@ -23,11 +23,10 @@ const CameraUpdate: React.FC<{
   return null;
 };
 
-const DemoScene: React.FC<
-  PropsWithChildren<{
-    sceneElements?: React.ReactNode;
-  }>
-> = ({ children, sceneElements }) => {
+const DemoScene: React.FC<{
+  children: ReactElement;
+  sceneElements?: React.ReactNode;
+}> = ({ children, sceneElements }) => {
   const {
     groundControls,
     fogControls,
@@ -76,7 +75,6 @@ const DemoScene: React.FC<
       }}
       disableGround={!groundControls.enableGround}
     >
-      {/* @ts-expect-error */}
       <Gallery
         item={{
           width: galleryItemControls.width,
