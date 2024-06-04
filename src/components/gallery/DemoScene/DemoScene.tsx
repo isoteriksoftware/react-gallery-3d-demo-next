@@ -1,5 +1,5 @@
-import React, { PropsWithChildren, ReactElement, useEffect } from "react";
-import { Gallery, GalleryScene } from "react-gallery-3d";
+import React, { useEffect } from "react";
+import { Gallery, GalleryChildren, GalleryScene } from "react-gallery-3d";
 import { Stats } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
 import { PerspectiveCamera } from "three";
@@ -24,7 +24,7 @@ const CameraUpdate: React.FC<{
 };
 
 const DemoScene: React.FC<{
-  children: ReactElement;
+  children: GalleryChildren;
   sceneElements?: React.ReactNode;
 }> = ({ children, sceneElements }) => {
   const {
